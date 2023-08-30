@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로컬스토리지</title>
+</head>
+<body>
+    키: <input type="text" id="key"/><br>
+    값: <input type="text" id="data"/><br>
+
+    <button onclick="saveData()">데이터 저장하기</button>
+    <button onclick="loadData()">데이터 출력하기</button><br>
+    <button onclick="removeData()">항목 삭제하기</button><br>
+    <button onclick="removeAllData()">데이터 전체 삭제하기</button><br>
+    저장목록: <span id="result"></span>
+
+    <script>
+        var key = document.getElementById("key");
+        var data = document.getElementById("data");
+        var result = document.getElementById("result");
+
+        function saveData(){
+            localStorage.setItem(key.value, data.value);
+            alert("데이터 저장 완료");
+        }
+
+        function loadData(){
+            result.innerHTML = "";
+            for(var i = 0; i<localStorage.length; i++){
+                var myKey = localStorage.key(i); //로컬스토리지의 key(0~길이)
+                var myData = localStorage.getItem(myKey);
+                var li = document.createElement("li");
+                var button = document.createElement("button");
+                button.innerText = "삭제";
+                button.addEventListener("click", function(){removeData(myKey)});
+                li.id = myKey;
+                li.innerHTML += myKey + ":" + myData + ", "
+                result.appendChild(li);
+                li.appendChild(button);
+            }
+        }
+        function removeData(myKey){
+            localStorage.removeItem(myKey);
+            result.innerHTML = ""; //화면 삭제한 다음에
+            loadData();  //다시 화면 출력하게 해서 삭제한 거 없앤다음에 출력함
+        }
+        function removeAllData(){
+            localStorage.clear();
+            result.innerHTML = "";
+        }
+
+    </script>
+</body>
+</html>
